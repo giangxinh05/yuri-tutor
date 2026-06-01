@@ -23,7 +23,7 @@
 
 **EN:** Yuri tutor is a PWA web app with no build step, helping tutors log lesson reports, track student progress, automatically calculate tuition by term and communicate with parents all through firebase realtime database, needing no separate server. this Web solves the problem that the admin saw while tutoring, which is that tutoring is mostly a side job for students or people with unpressured office jobs, a small number of students, however time still needs to be spent on studying, main work, so it was born to optimize communication time between tutors and parents, helping both sides save time (suitable for introverts who still want to grasp all information about the children or communicate with parents) . Since the author is not originally an IT major there might still be many flaws, very much hoping to receive improvement feedback from you guys.
 
-**VI:** Yuri tutor là một web app PWA không cần build step, giúp gia sư ghi chép báo cáo buổi học, theo dõi tiến độ học sinh, tính học phí tự động theo kỳ và giao tiếp với phụ huynh -tất cả qua firebase realtime database, không cần server riêng. Web này giải quyết vài vấn đề mà ad đã nhìn thấy khi đi dạy thêm, đó là công việc dạy thêm chủ yếu là nghề tay trái của các bạn sinh viên hoặc những bạn có công việc văn phòng không quá áp lực, số lượng học sinh nhỏ, tuy nhiên thời gian của gia sư và phụ huynh còn phải dành cho việc học, làm việc chính, nên nó ra đời để tối ưu thời gian giao tiếp giữa gia sư và phụ huynh, giúp đôi bên tiết kiệm thời gian (phù hợp với ai hướng nội nhưng vẫn muốn nắm bắt hết thông tin của con trẻ hoặc trao đổi phụ huynh) . Vì tác giả vốn không phải chuyên IT nên có thể vẫn còn nhiều thiếu sót, rất mong có thể nhận được những nhận xét cải thiện của các bạn. 
+**VI:** Yuri tutor là một web app PWA không cần build step, giúp gia sư ghi chép báo cáo buổi học, theo dõi tiến độ học sinh, tính học phí tự động theo kỳ và giao tiếp với phụ huynh -tất cả qua firebase realtime database, không cần server riêng. Web này giải quyết vài vấn đề mà ad đã nhìn thấy khi đi dạy thêm, đó là công việc dạy thêm chủ yếu là nghề tay trái của các bạn sinh viên hoặc những bạn có công việc văn phòng không quá áp lực, số lượng học sinh nhỏ, tuy nhiên thời gian của gia sư và phụ huynh còn phải dành cho việc học, làm việc chính, nên nó ra đời để tối ưu thời gian giao tiếp giữa gia sư và phụ huynh, giúp đôi bên tiết kiệm thời gian (phù hợp với ai hướng nội nhưng vẫn muốn nắm bắt hết thông tin của con trẻ hoặc trao đổi phụ huynh) . Vì tác giả vốn không phải chuyên IT và phải dựa vào sự giúp đỡ của AI nên có thể vẫn còn nhiều thiếu sót, rất mong có thể nhận được những nhận xét cải thiện của các bạn. 
 
 
 The system has **two separate interfaces**:
@@ -48,7 +48,7 @@ The system has **two separate interfaces**:
 - Offline banner when Firebase connection drops
 - Dark mode with `localStorage` persistence
 
-### 🛠️ Admin Workspace
+### 🛠️ Admin workspace
 - Family lookup by code or QR scan
 - Write, edit, and soft-delete lesson reports
 - Sync a single report to multiple siblings at once
@@ -85,7 +85,7 @@ DEMOPORTFOLIO/
 └── env.js                  # ⚠️ gitignored — never commit this file
 ```
 
-### System Architecture Diagram
+### System architecture diagram
 
 The app is structured in 4 layers:
 
@@ -290,7 +290,7 @@ Then open:
 1. Quản lý lưu trữ tài liệu: Do giới hạn về ngân sách duy trì cloud storage ban đầu, hệ thống hiện đang sử dụng link Google drive thủ công cho các bài tập. Việc này làm giảm tính đồng bộ và gây khó khăn trong việc lưu trữ, tìm kiếm tài liệu cũ về lâu dài.
 (File storage management: Due to initial cloud storage budget constraints, the system currently relies on manual Google Drive links for assignments. This reduces synchronization and complicates long term document storage and retrieval.)
 
-2. Khả năng mở rộng: Các thao tác cập nhật bài học, gắn link tài liệu và đánh giá tiến độ đang được thực hiện thủ công cho từng cá nhân. Quy trình này hoạt động tốt với quy mô nhỏ nhưng sẽ gặp nút thắt cổ chai nếu số lượng học sinh tăng lên.
+2. Khả năng mở rộng: Các thao tác cập nhật bài học, gắn link tài liệu và đánh giá tiến độ đang được thực hiện thủ công cho từng cá nhân. Quy trình này hoạt động tốt với quy mô nhỏ nhưng sẽ gặp khó khăn nếu số lượng học sinh tăng lên.
 (Scalability: Tasks such as updating lessons, attaching document links and tracking progress are performed manually for each individual. This workflow is effective for small scale use but will create a bottleneck as the number of students increases.)
 
 3. Chiều sâu của dữ liệu học tập: Hệ thống đánh giá sao và biểu đồ hiện tại mới chỉ ghi nhận mức độ hoàn thành và thái độ học tập trên bề mặt. Chưa có các chỉ số phân tích sâu về từng kỹ năng cụ thể hay lỗ hổng kiến thức của học sinh.
@@ -310,7 +310,7 @@ Then open:
 3. Nâng cấp module phân tích dữ liệu: Phát triển hệ thống tracking chi tiết hơn như điểm số theo từng kỹ năng, thời gian hoàn thành bài, biểu đồ radar năng lực để cung cấp insight thực chất cho phụ huynh.
 (Advanced analytics: Develop a more detailed tracking system such as scores per skill, completion time and competency radar charts to provide actionable insights for parents.)
 
-4. Tăng cường bảo mật: Nâng cấp cơ chế xác thực với OAuth (Google hoặc Facebook login) hoặc xác thực hai lớp.
+4. Tăng cường bảo mật: Nâng cấp cơ chế xác thực với oauth (google hoặc facebook login) hoặc xác thực hai lớp.
 (Security enhancement: Upgrade the authentication mechanism with OAuth or two factor authentication.)
 
 
