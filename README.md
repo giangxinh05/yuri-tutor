@@ -285,6 +285,34 @@ Then open:
 | Hosting | Netlify |
 
 ---
+## Hạn chế hiện tại / Current limitations
+
+1. Quản lý lưu trữ tài liệu: Do giới hạn về ngân sách duy trì cloud storage ban đầu, hệ thống hiện đang sử dụng link Google drive thủ công cho các bài tập. Việc này làm giảm tính đồng bộ và gây khó khăn trong việc lưu trữ, tìm kiếm tài liệu cũ về lâu dài.
+(File storage management: Due to initial cloud storage budget constraints, the system currently relies on manual Google Drive links for assignments. This reduces synchronization and complicates long term document storage and retrieval.)
+
+2. Khả năng mở rộng: Các thao tác cập nhật bài học, gắn link tài liệu và đánh giá tiến độ đang được thực hiện thủ công cho từng cá nhân. Quy trình này hoạt động tốt với quy mô nhỏ nhưng sẽ gặp nút thắt cổ chai nếu số lượng học sinh tăng lên.
+(Scalability: Tasks such as updating lessons, attaching document links and tracking progress are performed manually for each individual. This workflow is effective for small scale use but will create a bottleneck as the number of students increases.)
+
+3. Chiều sâu của dữ liệu học tập: Hệ thống đánh giá sao và biểu đồ hiện tại mới chỉ ghi nhận mức độ hoàn thành và thái độ học tập trên bề mặt. Chưa có các chỉ số phân tích sâu về từng kỹ năng cụ thể hay lỗ hổng kiến thức của học sinh.
+(Learning analytics: The current star rating system and charts only record completion rates and superficial learning attitudes. There is a lack of advanced metrics for deep analysis of specific skills or students' knowledge gaps.)
+
+4. Bảo mật dữ liệu: Phương thức xác thực thông qua mã gia đình tĩnh còn khá cơ bản, chưa tối ưu cho việc bảo vệ quyền riêng tư và dữ liệu học tập nhạy cảm của trẻ.
+(Data security: The authentication method using a static family code is relatively basic and not optimized for protecting children's privacy and sensitive learning data.)
+
+## Đề xuất cải tiến / Future roadmap
+
+1. Tích hợp cloud storage: Chuyển đổi sang sử dụng Firebase Storage hoặc AWS S3 để cho phép upload và quản lý file trực tiếp ngay trên nền tảng.
+(Cloud storage integration: Migrate to Firebase Storage or AWS S3 to enable direct file uploading and management within the platform.)
+
+2. Tối ưu hóa luồng công việc: Xây dựng tính năng tạo template bài học, cho phép giao bài tập và nhận xét hàng loạt để tối ưu thời gian cho giáo viên.
+(Workflow automation: Develop lesson template features and allow for batch assignments and bulk feedback to optimize teachers' time.)
+
+3. Nâng cấp module phân tích dữ liệu: Phát triển hệ thống tracking chi tiết hơn như điểm số theo từng kỹ năng, thời gian hoàn thành bài, biểu đồ radar năng lực để cung cấp insight thực chất cho phụ huynh.
+(Advanced analytics: Develop a more detailed tracking system such as scores per skill, completion time and competency radar charts to provide actionable insights for parents.)
+
+4. Tăng cường bảo mật: Nâng cấp cơ chế xác thực với OAuth (Google hoặc Facebook login) hoặc xác thực hai lớp.
+(Security enhancement: Upgrade the authentication mechanism with OAuth or two factor authentication.)
+
 
 ## 📋 Changelog
 
