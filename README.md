@@ -7,7 +7,7 @@
 **Hệ thống quản lý lớp học cá nhân dành cho gia sư ,nhẹ, nhanh, không cần backend**
 
 
-<video src="./0b6ee2a947754b8cb35a71def0533829.mov" controls="controls" style="max-width: 100%;">
+<video src="./3248663985405985241.mp4" controls="controls" style="max-width: 100%;">
 </video>
 
 [![Netlify Status](https://img.shields.io/badge/deploy-netlify-00C7B7?logo=netlify)](https://www.netlify.com/)
