@@ -1,0 +1,18 @@
+# ── Environment & secrets ──────────────────────────────────────────────────────
+.env
+.env.local
+.env.production
+env.js          # runtime env inject file (contains real Firebase keys + bank info)
+
+# ── OS & editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Local deploy scripts (may contain tokens) ─────────────────────────────────
+deploy.sh

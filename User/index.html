@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng báo cáo học tập - Ms. Giang</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="../env.js"></script>
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal-content" style="text-align: center; max-width: 400px;">
+        <button style="position: absolute; right: 20px; top: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #636e72;" data-close="paymentModal">✖</button>
+        <h2 style="color: var(--success); margin: 0 0 5px 0;">💳 Thanh toán học phí</h2>
+        <p style="color: #636e72; margin-bottom: 20px; font-size: 0.9rem;">Quét mã qua App ngân hàng hoặc MoMo</p>
+        
+        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 2px dashed #00b894;">
+            <img id="qrCodeImage" src="" alt="Mã QR Thanh Toán" style="width: 100%; max-width: 250px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <h3 id="paymentAmount" style="color: #2b8a3e; margin: 15px 0 5px 0; font-size: 1.8rem;">0 đ</h3>
+            <p id="paymentContent" style="color: #0984e3; font-weight: bold; margin: 0; font-size: 0.95rem;"></p>
+        </div>
+        
+        <button class="btn-main" id="btnConfirmPayment" style="background: var(--success);">✅ ĐÃ CHUYỂN KHOẢN</button>
+    </div>
+</div>
+<div id="login-screen">
+    <div style="font-size: 4.5rem; margin-bottom: 10px;">🏫</div>
+    <h2 style="color: var(--primary); margin:0 0 10px 0;">Cổng Thông Tin</h2>
+    <p style="color: #636e72; margin-bottom: 30px; font-weight:bold;">Lớp học của cô Giang</p>
+    
+    <input type="password" id="passcode" class="passcode-input" placeholder="Nhập mã gia đình...">
+    
+    <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:0.9rem; font-weight:bold;">
+        <label><input type="checkbox" id="rememberMe" checked> Ghi nhớ đăng nhập</label>
+        <a href="#" id="forgotPasscode" style="color:var(--primary); text-decoration:none;">Quên mã gia đình?</a>
+    </div>
+
+    <button class="btn-main" id="btnLogin">VÀO LỚP</button>
+</div>
+
+<div id="report-screen" style="display: none;">
+    <div class="broadcast-banner" id="broadcastDisplay" style="display:none;"></div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+        <h1 style="color: var(--primary); margin: 0; font-size: 2.2rem;">BÁO CÁO HỌC TẬP 📑</h1>
+        <div style="display: flex; gap: 10px;">
+            <button id="themeToggle" style="background: #e0e7ff; color: #4338ca; border: none; padding: 12px 20px; border-radius: 16px; font-weight: 800; cursor: pointer;">🌙 Giao diện</button>
+            <button id="btnLogout" style="background: #dfe6e9; color: #2d3436; border: none; padding: 12px 24px; border-radius: 16px; font-weight: 800; cursor: pointer;">🔒 Đăng xuất</button>
+        </div>
+    </div>
+    
+    <div id="data-container"></div>
+    
+    <div class="schedule-section" style="background: var(--card-bg); border-radius: 24px; padding: 30px; margin-top: 30px; box-shadow: var(--card-shadow);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
+            <span style="font-size:1.5rem; font-weight:800;">🗓️ lịch học cố định / tuần</span>
+            <button style="background: #e0e7ff; color: #4338ca; border: none; padding: 10px 20px; border-radius: 14px; font-weight: bold; cursor: pointer;" data-target="Chung">💬 Yêu cầu đổi lịch</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 25px;">
+            <div style="border: 2px solid #f1f2f6; border-radius: 16px; padding: 15px; text-align: center; opacity: 0.7;"><div style="font-weight:800;">Thứ 2</div><div style="color:#636e72;font-size:0.9rem; margin-top:5px;">Nghỉ</div></div>
+            <div style="border: 2px solid var(--primary); background: #f0f3ff; border-radius: 16px; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(108,92,231,0.1);"><div style="font-weight:800; color: var(--primary);">Thứ 3</div><div style="font-size:1rem;font-weight:bold; margin-top:5px;">19:30 - 21:30</div><div style="font-size:0.85rem;color:var(--primary);font-weight:bold;margin-top:8px; background: white; padding: 4px; border-radius: 6px;">📍 Cố định (300k)</div></div>
+            <div style="border: 2px solid #f1f2f6; border-radius: 16px; padding: 15px; text-align: center; opacity: 0.7;"><div style="font-weight:800;">Thứ 4</div><div style="color:#636e72;font-size:0.9rem; margin-top:5px;">Nghỉ</div></div>
+            <div style="border: 2px solid #f1f2f6; border-radius: 16px; padding: 15px; text-align: center; opacity: 0.7;"><div style="font-weight:800;">Thứ 5</div><div style="color:#636e72;font-size:0.9rem; margin-top:5px;">Nghỉ</div></div>
+            <div style="border: 2px solid var(--primary); background: #f0f3ff; border-radius: 16px; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(108,92,231,0.1);"><div style="font-weight:800; color: var(--primary);">Thứ 6</div><div style="font-size:1rem;font-weight:bold; margin-top:5px;">19:30 - 21:30</div><div style="font-size:0.85rem;color:var(--primary);font-weight:bold;margin-top:8px; background: white; padding: 4px; border-radius: 6px;">📍 Cố định (300k)</div></div>
+        </div>
+    </div>
+</div>
+
+<button class="floating-inbox-btn" id="inboxBtn" style="display:none;">
+    📬 Hòm thư <span class="badge" id="unreadBadge">0</span>
+</button>
+
+<div class="modal-overlay" id="inboxModal">
+    <div class="modal-content">
+        <button style="position: absolute; right: 20px; top: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #636e72;" data-close="inboxModal">✖</button>
+        <h2 style="margin: 0 0 20px 0; color: var(--primary);">📬 Hòm Thư Của Bạn</h2>
+        <div id="inbox-messages" style="max-height: 400px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 12px;"></div>
+        <button class="btn-main" style="margin-top: 20px; background: #00b894;" data-target="Chung">💬 GỬI YÊU CẦU/PHẢN HỒI CHO CÔ GIÁO</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="feedbackModal">
+    <div class="modal-content">
+        <h2 id="modalTitle" style="margin:0; color:var(--primary);">Gửi tin nhắn</h2>
+        <input type="hidden" id="feedbackTarget">
+        <textarea id="feedbackText" placeholder="Nhập nội dung xin nghỉ, đổi lịch..." style="width: 100%; height: 120px; padding: 15px; border-radius: 12px; font-family: inherit; margin: 15px 0; border: 2px solid #e2e8f0;"></textarea>
+        <div style="display:flex; gap:10px;">
+            <button class="btn-main" style="background:#f1f2f6; color:var(--dark); flex:1" data-close="feedbackModal">Hủy</button>
+            <button class="btn-main" style="flex:2" id="btnSubmitFeedback">GỬI ĐI</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast">🔔 Thông báo</div>
+
+<div class="modal-overlay" id="forgotModal">
+    <div class="modal-content" style="text-align:center;max-width:380px;">
+        <button style="position:absolute;right:20px;top:20px;background:none;border:none;
+            font-size:1.5rem;cursor:pointer;color:#636e72;" data-close="forgotModal">✖</button>
+        <div style="font-size:3.5rem;margin-bottom:10px;">🔑</div>
+        <h2 style="color:var(--primary);margin:0 0 10px 0;">Quên mã gia đình?</h2>
+        <p style="color:#636e72;font-weight:bold;margin-bottom:25px;">
+            Liên hệ Cô Giang qua Zalo để được cấp lại mã nhé!
+        </p>
+        <a href="https://zalo.me/0343220517" target="_blank" rel="noopener"
+            class="btn-main" style="display:block;text-decoration:none;background:var(--primary);
+            padding:16px;border-radius:16px;font-weight:800;color:white;">
+            💬 Nhắn Zalo Cô Giang
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuri Workspace - Quản Trị Lớp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../env.js"></script>
+    <script type="module" src="admin-app.js" defer></script>
+</head>
+<body>
+
+<button id="themeToggleAdmin" style="position: fixed; top: 10px; right: 10px; z-index: 100; background: var(--card-bg); border: 2px solid var(--primary); color: var(--primary); padding: 3px 10px; border-radius: 10px; cursor: pointer; font-weight: bold;">🌙 Giao diện</button>
+
+<div id="admin-login-screen">
+    <h2>Yuri Workspace</h2>
+    <input type="email" id="adminEmail" class="input-box" placeholder="Email quản trị...">
+    <input type="password" id="adminPass" class="input-box" placeholder="Mật khẩu...">
+    <button class="btn-main" id="btnLoginAdmin" style="background:var(--primary)">VÀO HỆ THỐNG</button>
+</div>
+
+<div id="admin-search-family-screen" style="display:none; max-width: 450px; margin: 12vh auto; background: var(--card-bg); padding: 45px 35px; border-radius: 24px; box-shadow: var(--card-shadow); text-align: center;">
+    <h2 style="color: var(--primary);">🔍 Tra cứu Gia Đình</h2>
+    <p style="color: #636e72; font-weight:bold; margin-bottom: 20px;">Nhập mã gia đình hoặc quét mã QR</p>
+    <input type="text" id="searchFamilyCode" class="input-box" placeholder="VD: NAMMINH..." style="text-transform: uppercase;">
+    <button class="btn-main" id="btnSearchFamily" style="background:var(--primary)">TÌM KIẾM HỒ SƠ</button>
+    <div id="qrCodeContainer" style="margin-top: 15px; display: flex; justify-content: center;"></div>
+    <button class="btn-main" id="btnLogoutAdmin" style="background:var(--danger); margin-top: 20px;">ĐĂNG XUẤT</button>
+</div>
+
+<div id="admin-family-overview-screen" style="display:none; max-width: 1200px; margin: 20px auto; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h1 style="color: var(--primary); margin: 0; font-size: 2rem;">Hồ sơ nhà: <span id="displayFamilyCode" style="color:var(--danger)"></span></h1>
+            <p style="margin: 5px 0 0 0; font-weight: bold; color: var(--success);">📊 Tỷ lệ đi học: <span id="attendanceRate">...</span>%</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button id="btnGoToWriteReport" style="background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(0,184,148,0.3);">📝 VIẾT BÁO CÁO MỚI</button>
+            <button id="btnBackToSearch" style="background: #dfe6e9; color: #2d3436; border: none; padding: 12px 20px; border-radius: 16px; font-weight: 800; cursor: pointer;">🔍 Tìm nhà khác</button>
+        </div>
+    </div>
+    
+    <div id="admin-overview-container"></div>
+</div>
+
+<div class="dashboard-container" id="admin-editor-screen" style="display: none;">
+    <div>
+        <div class="card">
+            <div class="card-header">👩‍🏫 Soạn Báo Cáo 
+                <button class="btn-sm" id="btnBackToOverview" style="background:#0984e3">Trở lại Hồ Sơ</button>
+            </div>
+            
+            <label style="font-weight:700; font-size: 0.85rem; color: var(--primary);">Đang viết báo cáo cho bé:</label>
+            <select class="custom-select" id="studentId" style="color:var(--primary); font-weight:bold; margin-top:5px;"></select>
+            
+            <select class="custom-select" id="cycleFilter" style="color: #2b8a3e; font-weight:bold; margin-top:15px;"></select>
+
+            <div style="background: linear-gradient(135deg, var(--primary), #a29bfe); border-radius: 14px; padding: 18px; color: white; text-align: center; margin: 15px 0; position: relative;">
+                <h3 id="totalLessons" style="margin:0; font-size:2.4rem;">0</h3>
+                <p style="margin:3px 0 0 0; font-weight: 700; font-size:0.9rem;">Số buổi dạy trong kỳ</p>
+                <button id="btnExportPDF" class="btn-sm" style="position: absolute; top: 10px; right: 10px; background: white; color: var(--primary);">📥 Xuất PDF</button>
+            </div>
+            
+            <label style="font-weight:700; font-size: 0.85rem;">Tiến độ tổng quát (%):</label>
+            <div style="display: flex; gap: 12px; align-items: center; margin-top: 5px;">
+                <input type="range" id="progressRange" min="0" max="100" style="flex:1">
+                <input type="number" id="progress" class="input-box" style="width:75px; margin:0; text-align:center; padding:8px;">
+            </div>
+        </div>
+
+        <div class="card" style="border: 2px solid var(--warning);">
+            <div class="card-header" style="color: var(--warning); border-bottom: none; margin-bottom: 5px;">📢 Loa thông báo</div>
+            <textarea id="broadcastMsg" class="input-box" rows="2" placeholder="Gõ thông báo sẽ rung điện thoại phụ huynh..."></textarea>
+            <button class="btn-main" id="btnUpdateBroadcast" style="background: var(--warning); color: #8a4b08; margin-bottom: 0;">Phát thông báo</button>
+        </div>
+
+        <div class="card" id="formArea">
+            <div class="card-header" id="formTitle">📝 Cập nhật tiến độ</div>
+            <input type="hidden" id="editingDateKey" value="">
+            <input type="date" id="logDate" class="input-box">
+            
+            <div style="margin: 3px 0 8px 0;">
+                <button class="tag quick-tag" data-insert="✅ Tiếp thu bài nhanh">+ Khen</button>
+                <button class="tag quick-tag" data-insert="🎯 Ôn tập ngữ pháp">+ Ngữ pháp</button>
+                <button class="tag quick-tag" data-insert="🗣️ Luyện phản xạ">+ Phát âm</button>
+            </div>
+            
+            <textarea id="content" class="input-box" rows="3" placeholder="Nội dung giảng dạy..."></textarea>
+            
+            <div style="background: var(--bg); border: 1px solid #d6e4ff; padding: 12px; border-radius: 12px; margin-bottom: 12px;">
+                <label style="font-weight:700; font-size: 0.8rem; color: var(--primary); display:block; margin-bottom:6px;">📂 Tài liệu (Drive/Canva):</label>
+                <input type="text" id="matName" placeholder="Tên học liệu..." class="input-box" style="padding:8px; font-size:0.85rem; margin-bottom:8px;">
+                <input type="text" id="matUrl" placeholder="Link (https://...)" class="input-box" style="padding:8px; font-size:0.85rem; margin-bottom:8px;">
+                <button type="button" class="btn-sm" id="btnAttachMat" style="background: var(--primary); width:100%; padding: 8px;">⚡ Nhúng Link Vào Bài</button>
+            </div>
+            
+            <textarea id="homework" class="input-box" rows="2" placeholder="Dán link Drive/Canva trực tiếp vào đây..."></textarea>
+            <select id="attitude" class="input-box">
+                <option value="⭐⭐⭐⭐⭐ (Rất tập trung)">⭐⭐⭐⭐⭐ (Rất tập trung)</option>
+                <option value="⭐⭐⭐⭐ (Khá tốt)">⭐⭐⭐⭐ (Khá tốt)</option>
+                <option value="⭐⭐⭐ (Cần cố gắng)">⭐⭐⭐ (Cần cố gắng)</option>
+            </select>
+            <div style="background: #fff9db; padding: 12px; border-radius: 12px; margin-bottom: 15px;">
+                <label style="cursor: pointer; color: #d35400; font-weight:700;"><input type="checkbox" id="saveForBoth"> 🚀 Đồng bộ 2 ANH EM</label>
+            </div>
+            <button class="btn-main" id="btnSubmit" style="background:var(--success)">Lưu báo cáo</button>
+            <button class="btn-main btn-cancel" id="btnCancel" style="display:none; background:#dfe6e9; color:#2d3436;">HỦY BỎ</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="card" style="border: 2px solid #74b9ff;">
+            <div class="card-header" style="color: #0984e3; border-bottom: none; margin-bottom: 5px;">
+                📬 Hòm thư gia đình <span id="unreadCount" style="background:#ff7675; color:white; padding:2px 10px; border-radius:12px; font-size:0.8rem; margin-left:10px;">0</span>
+            </div>
+            <div id="admin-feedbacks-list" style="max-height: 250px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="flex-direction: column; align-items: stretch; gap: 10px; border-bottom: none; margin-bottom:10px;">
+                <span>📚 Kho dữ liệu bài học</span>
+                <input type="text" id="logSearch" class="input-box" style="margin:0;" placeholder="🔍 Tìm nhanh (Từ khóa, ngày...)">
+            </div>
+            <div id="admin-logs-list" class="logs-grid-container"></div>
+            
+            <div class="pagination-controls" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+                <button class="btn-sm" id="btnPrevPage" style="background: var(--primary);">⬅️ Trước</button>
+                <span id="pageInfo" style="font-weight: bold; align-self: center;">1 / 1</span>
+                <button class="btn-sm" id="btnNextPage" style="background: var(--primary);">Sau ➡️</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast">🔔 Thông báo</div>
+
+<div id="historyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 2000; justify-content:center; align-items:center;">
+    <div style="background: var(--card-bg); padding: 25px; border-radius: 16px; max-width: 500px; width: 90%;">
+        <h3 style="margin-top:0; color:var(--primary);">🕒 Lịch sử chỉnh sửa</h3>
+        <div id="historyContent" style="max-height: 300px; overflow-y: auto; margin-bottom: 15px;"></div>
+        <button class="btn-main" onclick="document.getElementById('historyModal').style.display='none'" style="background: var(--danger);">ĐÓNG</button>
+    </div>
+</div>
+
+</body>
+</html>
