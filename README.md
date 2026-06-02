@@ -7,8 +7,10 @@
 **Hệ thống quản lý lớp học cá nhân dành cho gia sư ,nhẹ, nhanh, không cần backend**
 
 
-<video src="https://raw.githubusercontent.com/giangxinh05/yuri-tutor/main/3248663985405985241.mp4" controls width="100%"></video>
+<video src="https://github.com/giangxinh05/yuri-tutor/releases/download/v1.0/3248663985405985241.mp4" controls width="100%"></video>
+
 [![Netlify Status](https://img.shields.io/badge/deploy-netlify-00C7B7?logo=netlify)](https://www.netlify.com/)
+
 [![Firebase](https://img.shields.io/badge/backend-Firebase_RTDB-FFCA28?logo=firebase)](https://firebase.google.com/)
 [![PWA Ready](https://img.shields.io/badge/PWA-ready-5A0FC8?logo=pwa)](https://web.dev/progressive-web-apps/)
 [![Vanilla JS](https://img.shields.io/badge/JS-Vanilla_ES_Modules-F7DF1E?logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
