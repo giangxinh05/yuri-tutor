@@ -31,15 +31,15 @@
 
 **EN:** Yuri tutor is a PWA web app with no build step, helping tutors log lesson reports, track student progress, automatically calculate tuition by term and communicate with parents all through firebase realtime database, needing no separate server. this Web solves the problem that the admin saw while tutoring, which is that tutoring is mostly a side job for students or people with unpressured office jobs, a small number of students, however time still needs to be spent on studying, main work, so it was born to optimize communication time between tutors and parents, helping both sides save time (suitable for introverts who still want to grasp all information about the children or communicate with parents) . Since the author is not originally an IT major there might still be many flaws, very much hoping to receive improvement feedback from you guys.
 
-**VI:** Yuri tutor là một web app PWA không cần build step, giúp gia sư ghi chép báo cáo buổi học, theo dõi tiến độ học sinh, tính học phí tự động theo kỳ và giao tiếp với phụ huynh -tất cả qua firebase realtime database, không cần server riêng. Web này giải quyết vài vấn đề mà ad đã nhìn thấy khi đi dạy thêm, đó là công việc dạy thêm chủ yếu là nghề tay trái của các bạn sinh viên hoặc những bạn có công việc văn phòng không quá áp lực, số lượng học sinh nhỏ, tuy nhiên thời gian của gia sư và phụ huynh còn phải dành cho việc học, làm việc chính, nên nó ra đời để tối ưu thời gian giao tiếp giữa gia sư và phụ huynh, giúp đôi bên tiết kiệm thời gian (phù hợp với ai hướng nội nhưng vẫn muốn nắm bắt hết thông tin của con trẻ hoặc trao đổi phụ huynh) . Vì tác giả vốn không phải chuyên IT và phải dựa vào sự giúp đỡ của AI nên có thể vẫn còn nhiều thiếu sót, rất mong có thể nhận được những nhận xét cải thiện của các bạn. 
+**VI:** Yuri tutor là một web app PWA không cần build step, giúp gia sư ghi chép báo cáo buổi học, theo dõi tiến độ học sinh, tính học phí tự động theo kỳ và giao tiếp với phụ huynh,tất cả qua firebase realtime database, không cần server riêng. Web này giải quyết vài vấn đề mà ad đã nhìn thấy khi đi dạy thêm,công việc này chủ yếu là nghề tay trái của các bạn sinh viên hoặc những bạn có công việc văn phòng không quá áp lực, số lượng học sinh nhỏ, tuy nhiên thời gian của gia sư và phụ huynh còn phải dành cho việc học, làm việc chính, nên nó ra đời để tối ưu thời gian giao tiếp giữa gia sư và phụ huynh, giúp đôi bên tiết kiệm thời gian (phù hợp với ai hướng nội nhưng vẫn muốn nắm bắt hết thông tin của con trẻ hoặc trao đổi phụ huynh) . Vì tác giả vốn không phải chuyên IT và phải dựa vào sự giúp đỡ của AI nên có thể vẫn còn nhiều thiếu sót, rất mong có thể nhận được những nhận xét cải thiện của các bạn. 
 
 
 The system has **two separate interfaces**:
 
 | Interface | File | User |
 |---|---|---|
-| 📚 **Parent Portal** | `User/index.html` + `User/app.js` | Parents — view reports, message teacher, pay tuition |
-| 🛠️ **Admin Workspace** | `Admin/admin.html` + `Admin/admin-app.js` | Teacher — write reports, manage students, broadcast |
+| 📚 **Parent Portal** | `User/index.html` + `User/app.js` | Parents - view reports, message teacher, pay tuition |
+| 🛠️ **Admin Workspace** | `Admin/admin.html` + `Admin/admin-app.js` | Teacher - write reports, manage students, broadcast |
 
 ---
 
@@ -47,8 +47,8 @@ The system has **two separate interfaces**:
 
 ### 📚 Parent Portal
 - Family passcode login (no email required / đăng nhập bằng mã gia đình)
-- Per-student lesson reports with full edit history
-- Attitude progress chart (vanilla Canvas API — no chart library)
+- Per student lesson reports with full edit history
+- Attitude progress chart (vanilla Canvas API no chart library)
 - Auto-calculated tuition per billing cycle (16th–15th monthly)
 - VietQR payment with MB Bank deep link
 - Inbox for parent–teacher messaging
@@ -89,8 +89,8 @@ DEMOPORTFOLIO/
 │   └── utils.js            # Shared utilities (re-exported)
 ├── .gitignore
 ├── CHANGELOG.md
-├── env.example             # Template — copy to env.js and fill in values
-└── env.js                  # ⚠️ gitignored — never commit this file
+├── env.example             # Template  copy to env.js and fill in values
+└── env.js                  # ⚠️ gitignored  never commit this file
 ```
 
 ### System architecture diagram
@@ -104,7 +104,7 @@ The app is structured in 4 layers:
 └──────────────┬──────────────┬────────┬──────────┘
                │ auth request │        │
 ┌──────────────▼──────────────▼────────▼──────────┐  ┌──────────────────────┐
-│  Layer 3: Core — Auth + Data                    │  │  Layer 2: Shared     │
+│  Layer 3: Core - Auth + Data                    │  │  Layer 2: Shared     │
 │  ┌─────────────────────────────────────────┐    │  │  Logic               │
 │  │ Auth & Access Control                   │    │  │                      │
 │  │ Passcode Mapper → Firebase Auth → RBAC  │    │◄─│  Utilities           │
@@ -238,11 +238,11 @@ Apply these rules in firebase console → realtime database → rules:
 ### 4. Deploy to Netlify
 
 ```bash
-# Option A — Netlify CLI
+# Option A Netlify CLI
 npm install -g netlify-cli
 netlify deploy --prod --dir .
 
-# Option B — Drag and drop the project folder at netlify.com/drop
+# Option B Drag and drop the project folder at netlify.com/drop
 ```
 
 To inject `env.js` automatically at deploy time, add a Netlify build command that generates the file from environment variables set in **Site settings → Environment variables**.
@@ -260,8 +260,8 @@ npx serve .
 ```
 
 Then open:
-- `http://localhost:8080/User/` — Parent Portal
-- `http://localhost:8080/Admin/` — Admin Workspace
+               - `http://localhost:8080/User/`Parent Portal
+               - `http://localhost:8080/Admin/`Admin Workspace
 
 ---
 
