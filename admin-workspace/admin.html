@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Report Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="module" src="admin-app.js" defer></script>
+</head>
+<body>
+
+<div id="admin-login-screen">
+    <div class="login-icon">🏫</div>
+    <h2>Learning Report Workspace</h2>
+    <p class="login-sub">Quản trị lớp học</p>
+    <input type="email" id="adminEmail" class="input-box" placeholder="Email quản trị...">
+    <input type="password" id="adminPass" class="input-box" placeholder="Mật khẩu...">
+    <button class="btn-main" id="btnLoginAdmin">VÀO HỆ THỐNG</button>
+</div>
+
+<div id="admin-search-family-screen" style="display:none;">
+    <div class="login-icon">🔍</div>
+    <h2>Tra cứu gia đình</h2>
+    <p class="login-sub">Nhập mã gia đình để mở hồ sơ</p>
+    <input type="text" id="searchFamilyCode" class="input-box upper" placeholder="VD: FAMILYCODE...">
+    <button class="btn-main" id="btnSearchFamily">TÌM KIẾM HỒ SƠ</button>
+    <div id="qrCodeContainer" class="qr-box"></div>
+    <button class="btn-main btn-danger" id="btnLogoutAdmin">ĐĂNG XUẤT</button>
+</div>
+
+<div id="admin-app-screen" style="display:none;">
+
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-family" id="displayFamilyCode">—</div>
+            <div class="top-bar-sub">Tỉ lệ đi học: <span id="attendanceRate">—</span>%</div>
+        </div>
+        <div class="top-bar-actions">
+            <button id="themeToggleAdmin" class="icon-btn" title="Giao diện">☀️</button>
+            <button id="btnBackToSearch" class="icon-btn" title="Đổi gia đình">🔄</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-tab="tab-baocao">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Báo cáo</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-nangluc">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Năng lực</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-hocphi">
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Học phí</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-dulieu">
+            <span class="nav-icon">🔬</span>
+            <span class="nav-label">Dữ liệu</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-caidat">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Cài đặt</span>
+        </button>
+    </nav>
+
+    <div id="tab-baocao" class="tab-content active">
+
+        <div class="section-card">
+            <div class="section-head">Đang soạn cho</div>
+            <div class="selector-row">
+                <select class="input-box" id="studentId"></select>
+                <select class="input-box" id="cycleFilter"></select>
+            </div>
+            <div class="metric-panel">
+                <h3 id="totalLessons">0</h3>
+                <p>buổi dạy trong kỳ</p>
+                <button id="btnExportPDF" class="btn-sm btn-light">Xuất PDF</button>
+            </div>
+            <label>Tiến độ tổng quát (%)</label>
+            <div class="range-row">
+                <input type="range" id="progressRange" min="0" max="100">
+                <input type="number" id="progress" class="input-box small-number">
+            </div>
+        </div>
+
+        <div class="section-card" id="formArea">
+            <div class="section-head" id="formTitle">Soạn báo cáo mới</div>
+            <input type="hidden" id="editingDateKey" value="">
+            <label>Ngày học</label>
+            <input type="date" id="logDate" class="input-box">
+            <div class="tag-row">
+                <button class="tag quick-tag" data-insert="Tiếp thu bài nhanh">+ Khen</button>
+                <button class="tag quick-tag" data-insert="Ôn tập ngữ pháp">+ Ngữ pháp</button>
+                <button class="tag quick-tag" data-insert="Luyện phản xạ nói">+ Phản xạ</button>
+            </div>
+            <label>Nội dung giảng dạy</label>
+            <textarea id="content" class="input-box textarea" rows="3" placeholder="Nội dung giảng dạy..."></textarea>
+            <div class="sub-panel">
+                <label>Tài liệu / học liệu</label>
+                <input type="text" id="matName" placeholder="Tên học liệu..." class="input-box compact">
+                <input type="text" id="matUrl" placeholder="Link (https://...)" class="input-box compact">
+                <button type="button" class="btn-main btn-neutral full" id="btnAttachMat">Nhúng link vào bài</button>
+            </div>
+            <label>Bài tập về nhà</label>
+            <textarea id="homework" class="input-box textarea" rows="2" placeholder="Dán link Drive/Canva hoặc bài tập..."></textarea>
+            <label>Thái độ học</label>
+            <select id="attitude" class="input-box">
+                <option value="⭐⭐⭐⭐⭐ (Rất tập trung)">⭐⭐⭐⭐⭐ (Rất tập trung)</option>
+                <option value="⭐⭐⭐⭐ (Khá tốt)">⭐⭐⭐⭐ (Khá tốt)</option>
+                <option value="⭐⭐⭐ (Cần cố gắng)">⭐⭐⭐ (Cần cố gắng)</option>
+            </select>
+            <div class="sync-box">
+                <label><input type="checkbox" id="saveForBoth"> Đồng bộ 2 anh em</label>
+            </div>
+            <button class="btn-main btn-success" id="btnSubmit">Lưu báo cáo</button>
+            <button class="btn-main btn-neutral" id="btnCancel" style="display:none;">Hủy bỏ</button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">
+                <span>Kho bài học</span>
+            </div>
+            <input type="text" id="logSearch" class="input-box" placeholder="Tìm theo từ khóa, ngày...">
+            <div id="admin-logs-list" class="logs-grid-container"></div>
+            <div class="pagination-controls">
+                <button class="btn-sm" id="btnPrevPage">← Trước</button>
+                <span id="pageInfo">1 / 1</span>
+                <button class="btn-sm" id="btnNextPage">Sau →</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-nangluc" class="tab-content" style="display:none;">
+
+        <div class="section-card">
+            <div class="section-head">
+                <span>Hồ sơ gia đình</span>
+                <a id="btnOpenAnalytics" class="soft-btn" href="#" target="_blank">Chi tiết ↗</a>
+            </div>
+            <div class="search-field">
+                <span class="search-icon">⌕</span>
+                <input type="search" id="overviewSearch" class="input-box" placeholder="Tìm ngày, kỳ, nội dung hoặc học sinh...">
+            </div>
+            <div id="admin-overview-container"></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">Đánh giá năng lực tháng</div>
+            <div class="selector-row">
+                <input type="month" id="assessmentMonth" class="input-box">
+                <button id="btnSaveAssessment" class="btn-main btn-success">Lưu đánh giá</button>
+            </div>
+            <div class="saved-cycles-box">
+                <div class="saved-cycles-label">Các kỳ đã lưu</div>
+                <div id="savedCyclesList"><p class="muted-sm">Chọn bé để xem danh sách.</p></div>
+            </div>
+            <div class="rubric-grid" id="rubricGrid"></div>
+            <div class="sub-panel">
+                <label>Điểm kiểm tra tháng (0-100)</label>
+                <input type="number" id="monthlyTest" class="input-box" min="0" max="100">
+                <label>Chủ đề / giáo trình / học liệu tháng</label>
+                <textarea id="learningMaterials" class="input-box textarea" rows="2"></textarea>
+                <label>Nhận xét của cô</label>
+                <textarea id="assessmentComment" class="input-box textarea" rows="2"></textarea>
+                <label>Lời khuyên cho phụ huynh</label>
+                <textarea id="assessmentAdvice" class="input-box textarea" rows="2"></textarea>
+                <label>Trọng tâm tháng tới</label>
+                <input type="text" id="nextFocus" class="input-box">
+            </div>
+            <div id="assessmentPreview" class="assessment-preview"></div>
+        </div>
+    </div>
+
+    <div id="tab-hocphi" class="tab-content" style="display:none;">
+        <div class="section-card">
+            <div class="section-head">Cấu hình học phí và thanh toán</div>
+            <div class="payment-settings-grid">
+                <label>Học phí mỗi buổi
+                    <input type="number" id="billingFeePerLesson" class="input-box" min="0" step="10000">
+                </label>
+                <label>Ngân hàng
+                    <input type="text" id="billingBankId" class="input-box" placeholder="VD: MB, VCB, TCB">
+                </label>
+                <label>Số tài khoản
+                    <input type="text" id="billingAccountNo" class="input-box">
+                </label>
+                <label>Tên chủ tài khoản
+                    <input type="text" id="billingAccountName" class="input-box">
+                </label>
+                <label class="payment-content-field">Nội dung chuyển khoản
+                    <input type="text" id="billingTransferContent" class="input-box" placeholder="VD: Hoc phi FAMILYCODE">
+                </label>
+            </div>
+            <button id="btnSaveBillingSettings" class="btn-main btn-success">Lưu cấu hình học phí và QR</button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">Học phí kỳ hiện tại và QR</div>
+            <div id="billing-admin-container"></div>
+            <div id="qrCodeContainer2" class="qr-box"></div>
+        </div>
+    </div>
+
+    <div id="tab-dulieu" class="tab-content" style="display:none;">
+        <div class="section-card">
+            <div class="section-head">
+                <span>Export dữ liệu</span>
+            </div>
+            <p class="muted-sm">Xuất toàn bộ điểm và đánh giá để phân tích bằng Python.</p>
+            <div class="data-toolbar">
+                <select id="dataStudentFilter" class="input-box"></select>
+                <div class="search-field">
+                    <span class="search-icon">⌕</span>
+                    <input type="search" id="dataSearch" class="input-box" placeholder="Tìm học sinh, kỳ, CEFR, nhận xét...">
+                </div>
+            </div>
+            <div class="export-grid">
+                <button id="btnExportCsv" class="btn-main btn-primary">📥 Xuất CSV</button>
+                <button id="btnExportJson" class="btn-main btn-primary">📥 Xuất JSON</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">Biểu đồ tiến độ kỹ năng</div>
+            <div id="data-chart-container">
+                <p class="muted-sm">Chọn bé và kỳ để xem biểu đồ.</p>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">Bảng điểm tổng hợp</div>
+            <div id="data-scores-table">
+                <p class="muted-sm">Dữ liệu sẽ hiện sau khi chọn gia đình.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-caidat" class="tab-content" style="display:none;">
+
+        <div class="section-card">
+            <div class="section-head">🔔 Loa thông báo</div>
+            <textarea id="broadcastMsg" class="input-box textarea" rows="3" placeholder="Gõ thông báo cho gia đình đang mở..."></textarea>
+            <button class="btn-main btn-warning" id="btnUpdateBroadcast">Phát thông báo</button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">📅 Quản lý lịch dạy</div>
+            <div class="schedule-form">
+                <select id="scheduleDay" class="input-box">
+                    <option value="2">Thứ 2</option>
+                    <option value="3">Thứ 3</option>
+                    <option value="4">Thứ 4</option>
+                    <option value="5">Thứ 5</option>
+                    <option value="6">Thứ 6</option>
+                    <option value="7">Thứ 7</option>
+                    <option value="8">Chủ nhật</option>
+                </select>
+                <select id="scheduleStatus" class="input-box">
+                    <option value="fixed">Cố định</option>
+                    <option value="changed">Đổi lịch</option>
+                    <option value="makeup">Học bù</option>
+                    <option value="off">Nghỉ</option>
+                </select>
+                <input type="time" id="scheduleStart" class="input-box">
+                <input type="time" id="scheduleEnd" class="input-box">
+                <input type="number" id="scheduleFee" class="input-box" placeholder="Học phí/buổi">
+                <input type="text" id="scheduleNote" class="input-box" placeholder="Ghi chú">
+            </div>
+            <button id="btnSaveSchedule" class="btn-main btn-primary">Lưu lịch học</button>
+            <div id="scheduleList" class="mini-list"></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">
+                <span>✉️ Hòm thư gia đình</span>
+                <span id="unreadCount" class="pill">0</span>
+            </div>
+            <div id="admin-feedbacks-list" class="feedback-list"></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-head">Tài khoản</div>
+            <button class="btn-main btn-danger" id="btnLogoutAdmin2">Đăng xuất</button>
+        </div>
+    </div>
+
+</div>
+
+<div id="admin-editor-screen" class="screen-editor" style="display:none;">
+</div>
+
+<div id="admin-family-overview-screen" style="display:none;">
+</div>
+
+<div id="historyModal" class="modal-layer" style="display:none;">
+    <div class="modal-box">
+        <h3>Lịch sử chỉnh sửa</h3>
+        <div id="historyContent" class="modal-scroll"></div>
+        <button class="btn-main btn-danger" onclick="document.getElementById('historyModal').style.display='none'">Đóng</button>
+    </div>
+</div>
+
+<div id="confirmModal" class="modal-layer" style="display:none;">
+    <div class="modal-box">
+        <h3 id="confirmTitle">Xác nhận</h3>
+        <p id="confirmMessage"></p>
+        <textarea id="confirmInput" class="input-box textarea" rows="3" style="display:none;"></textarea>
+        <div class="modal-actions">
+            <button id="btnConfirmCancel" class="btn-main btn-neutral">Hủy</button>
+            <button id="btnConfirmOk" class="btn-main btn-danger">Đồng ý</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast">Thông báo</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.tab;
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            btn.classList.add('active');
+            document.getElementById(target).style.display = 'block';
+            const labels = { 'tab-baocao': 'Báo cáo', 'tab-nangluc': 'Năng lực', 'tab-hocphi': 'Học phí', 'tab-dulieu': 'Dữ liệu', 'tab-caidat': 'Cài đặt' };
+        });
+    });
+
+    const btn2 = document.getElementById('btnLogoutAdmin2');
+    if (btn2) btn2.addEventListener('click', () => {
+        document.getElementById('btnLogoutAdmin')?.click();
+    });
+
+    const origSwitchInterval = setInterval(() => {
+        if (window.__adminAppLoaded) { clearInterval(origSwitchInterval); return; }
+        const observer = new MutationObserver(() => {
+            const editorLegacy = document.getElementById('admin-editor-screen');
+            const overviewLegacy = document.getElementById('admin-family-overview-screen');
+            const appScreen = document.getElementById('admin-app-screen');
+
+            if (editorLegacy && editorLegacy.style.display !== 'none') {
+                editorLegacy.style.display = 'none';
+                appScreen.style.display = 'block';
+                document.querySelector('[data-tab="tab-baocao"]')?.click();
+            }
+            if (overviewLegacy && overviewLegacy.style.display !== 'none') {
+                overviewLegacy.style.display = 'none';
+                appScreen.style.display = 'block';
+            }
+        });
+        ['admin-editor-screen', 'admin-family-overview-screen'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+        });
+        window.__adminAppLoaded = true;
+    }, 100);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Learning Report",
+  "short_name": "ReportApp",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdf6e3",
+  "theme_color": "#6c5ce7",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/bottts/png?seed=LearningReport&backgroundColor=6c5ce7",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

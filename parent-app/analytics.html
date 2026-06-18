@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ năng lực học tập</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="analytics.js" defer></script>
+</head>
+<body>
+<main class="analytics-shell">
+    <div class="page-header">
+        <div>
+            <h1>Hồ sơ năng lực</h1>
+            <p class="muted">Biểu đồ 4 kỹ năng theo từng kỳ học tháng</p>
+        </div>
+        <div class="header-actions">
+            <select id="studentSelect" class="passcode-input" style="width:auto; min-width:180px; margin:0; padding:10px;"></select>
+            <button class="soft-btn" id="btnExportCsv">Xuất CSV</button>
+            <button class="soft-btn" id="btnExportJson">Xuất JSON</button>
+            <a class="neutral-btn" href="index.html">Về báo cáo</a>
+        </div>
+    </div>
+
+    <section class="analytics-card">
+        <div class="score-grid" id="summaryGrid"></div>
+    </section>
+
+    <section class="analytics-card">
+        <h2 style="margin-top:0; color:var(--primary);">Xu hướng kỹ năng</h2>
+        <div class="chart-wrap" id="skillChart"></div>
+    </section>
+
+    <section class="analytics-card">
+        <h2 style="margin-top:0; color:var(--primary);">Lịch sử đánh giá</h2>
+        <div class="chart-wrap">
+            <table class="assessment-table">
+                <thead>
+                    <tr>
+                        <th>Kỳ</th>
+                        <th>Nghe</th>
+                        <th>Nói</th>
+                        <th>Đọc</th>
+                        <th>Viết</th>
+                        <th>Test</th>
+                        <th>Tổng</th>
+                        <th>CEFR</th>
+                        <th>Nhận xét / Lời khuyên</th>
+                    </tr>
+                </thead>
+                <tbody id="assessmentRows"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<div id="toast">Thông báo</div>
+</body>
+</html>

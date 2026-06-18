@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng báo cáo học tập</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-icon">🏫</div>
+    <h2>Cổng Thông Tin</h2>
+    <p class="login-subtitle">Lớp học của giáo viên</p>
+    <input type="password" id="passcode" class="passcode-input" placeholder="Nhập mã gia đình...">
+    <div class="login-options">
+        <label><input type="checkbox" id="rememberMe" checked> Ghi nhớ đăng nhập</label>
+        <a href="#" id="forgotPasscode">Quên mã?</a>
+    </div>
+    <button class="btn-main" id="btnLogin">VÀO LỚP</button>
+</div>
+
+<div id="app-screen" style="display:none;">
+
+    <div class="broadcast-banner" id="broadcastDisplay" style="display:none;"></div>
+
+    <div class="top-bar">
+        <div class="top-bar-title" id="topBarTitle">Báo cáo học tập</div>
+        <div class="top-bar-actions">
+            <button id="themeToggle" class="icon-btn" title="Giao diện">☀️</button>
+            <button id="btnLogout" class="icon-btn" title="Đăng xuất">🚪</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-tab="bao-cao">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Báo cáo</span>
+        </button>
+        <button class="nav-btn" data-tab="ho-so">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Năng lực</span>
+        </button>
+        <button class="nav-btn" data-tab="hoc-phi">
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Học phí</span>
+        </button>
+        <button class="nav-btn" data-tab="lich-hoc">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Lịch học</span>
+        </button>
+    </nav>
+
+    <div id="tab-bao-cao" class="tab-content active">
+        <div id="data-container"></div>
+    </div>
+
+    <div id="tab-ho-so" class="tab-content" style="display:none;">
+        <div class="section-card">
+            <div class="section-head">
+                <span>Hồ sơ năng lực</span>
+                <a class="soft-btn" id="analyticsLink" href="analytics.html">Chi tiết ↗</a>
+            </div>
+            <div id="analytics-preview-container" class="analytics-preview-grid"></div>
+        </div>
+    </div>
+
+    <div id="tab-hoc-phi" class="tab-content" style="display:none;">
+        <div id="billing-container"></div>
+    </div>
+
+    <div id="tab-lich-hoc" class="tab-content" style="display:none;">
+        <div class="section-card">
+            <div class="section-head">
+                <span>Lịch học gia đình</span>
+            </div>
+            <div id="schedule-container" class="schedule-grid"></div>
+            <button class="btn-main" style="margin-top:20px;" data-target="Chung">✏️ Nhắn cô đổi lịch</button>
+        </div>
+    </div>
+
+</div>
+
+<button class="floating-inbox-btn" id="inboxBtn" style="display:none;">
+    Hòm thư <span class="badge" id="unreadBadge">0</span>
+</button>
+
+<div class="modal-overlay" id="inboxModal">
+    <div class="modal-content">
+        <button class="modal-close" data-close="inboxModal">✕</button>
+        <h2>Hòm thư</h2>
+        <div id="inbox-messages" class="message-list"></div>
+        <button class="btn-main" data-target="Chung">GỬI YÊU CẦU CHO CÔ GIÁO</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="feedbackModal">
+    <div class="modal-content">
+        <h2 id="modalTitle">Gửi tin nhắn</h2>
+        <input type="hidden" id="feedbackTarget">
+        <textarea id="feedbackText" placeholder="Nhập nội dung..." class="textarea"></textarea>
+        <div class="modal-actions">
+            <button class="btn-main secondary" data-close="feedbackModal">Hủy</button>
+            <button class="btn-main" id="btnSubmitFeedback">GỬI ĐI</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal-content modal-center">
+        <button class="modal-close" data-close="paymentModal">✕</button>
+        <h2 class="success-title">Thanh toán học phí</h2>
+        <p class="muted">Quét mã qua app ngân hàng hoặc MoMo</p>
+        <div class="payment-box">
+            <img id="qrCodeImage" src="" alt="Mã QR thanh toán">
+            <h3 id="paymentAmount">0 đ</h3>
+            <p id="paymentContent"></p>
+        </div>
+        <button class="btn-main" id="btnConfirmPayment">ĐÃ CHUYỂN KHOẢN</button>
+    </div>
+</div>
+
+<div id="toast">Thông báo</div>
+</body>
+</html>

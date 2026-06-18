@@ -1,0 +1,51 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "Admins": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('Admins').child(auth.uid).val() === true)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true"
+      }
+    },
+
+    "Passcodes": {
+      "$familyCode": {
+        ".read": "auth != null && (root.child('Admins').child(auth.uid).val() === true || root.child('FamilyUsers').child(auth.uid).child('familyCode').val() === $familyCode)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true"
+      }
+    },
+
+    "Families": {
+      "$familyCode": {
+        ".read": "auth != null && (root.child('Admins').child(auth.uid).val() === true || root.child('FamilyUsers').child(auth.uid).child('familyCode').val() === $familyCode)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true"
+      }
+    },
+
+    "Students": {
+      "$studentId": {
+        ".read": "auth != null && (root.child('Admins').child(auth.uid).val() === true || root.child('StudentAccess').child(auth.uid).child($studentId).val() === true)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true",
+        "feedbacks": {
+          ".write": "auth != null && (root.child('Admins').child(auth.uid).val() === true || root.child('StudentAccess').child(auth.uid).child($studentId).val() === true)"
+        }
+      }
+    },
+
+    "FamilyUsers": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('Admins').child(auth.uid).val() === true)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true"
+      }
+    },
+
+    "StudentAccess": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('Admins').child(auth.uid).val() === true)",
+        ".write": "auth != null && root.child('Admins').child(auth.uid).val() === true"
+      }
+    }
+  }
+}
